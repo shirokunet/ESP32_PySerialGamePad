@@ -1,0 +1,6 @@
+---
+log_level: 'debug' # chose 'info' or 'debug'
+debug_console_interval: 0.1
+
+ino_port: '/dev/ttyUSB0'
+ino_baud: 115200
