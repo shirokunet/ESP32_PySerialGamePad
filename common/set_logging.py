@@ -4,7 +4,7 @@
 import datetime
 import logging
 
-def set_logging(name, cfg_log_level='info', stream=True, file=True, dir='log/', filetype='.log'):
+def set_logging(name, cfg_log_level='info', stream=True, file=False, dir='log/', filetype='.log'):
     logger = logging.getLogger(name)
     if cfg_log_level == 'debug':
         logger.setLevel(logging.DEBUG)
