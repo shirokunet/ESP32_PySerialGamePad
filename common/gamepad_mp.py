@@ -20,10 +20,10 @@ class GamePadMp():
         # communication variables
         self._m = Manager()
         self.status_dict = self._m.dict({
-            'jXL': 0, \
-            'jYL': 0, \
-            'jXR': 0, \
-            'jYR': 0, \
+            'jXL': 127, \
+            'jYL': 127, \
+            'jXR': 127, \
+            'jYR': 127, \
             'bLB': 0, \
             'bRB': 0
         })
