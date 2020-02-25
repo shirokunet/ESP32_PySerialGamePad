@@ -1,14 +1,15 @@
+#include "esp32_serial_twoways.h"
 
-#define TX_SIZE 3
-#define RX_SIZE 6
+ESP32_SERIALTW::ESP32_SERIALTW(int tx_size, int rx_size)
+{
+  tx_size_ = tx_size;
+  rx_size_ = rx_size;
+}
 
-int _tx_data[TX_SIZE];
-int _rx_data[RX_SIZE];
-String str= "";
-
-void serial_send(int tx_data[]){
+void ESP32_SERIALTW::transmit(int tx_data[])
+{
   Serial.print("#,");
-  for (int i = 0; i < TX_SIZE; ++i)
+  for (int i = 0; i < tx_size_; ++i)
   {
     Serial.print(tx_data[i]);
     Serial.print(',');
@@ -16,7 +17,8 @@ void serial_send(int tx_data[]){
   Serial.print('\n');
 }
 
-bool serial_receive(int rx_data[]){
+bool ESP32_SERIALTW::receive(int rx_data[]){
+  static String str= "";
   if(Serial.available() > 0)
   {
     char ch = Serial.read();
@@ -27,7 +29,7 @@ bool serial_receive(int rx_data[]){
         int lastIndex = 2;  // skip '#,'
         int counter = 0;
         for (int i = lastIndex; i < str.length(); i++) {
-          if (str.substring(i, i+1) == ",") {
+          if (str.substring(i, i+1) == "," && counter < rx_size_) {
             rx_data[counter] = str.substring(lastIndex, i).toInt();
             lastIndex = i + 1;
             counter++;
@@ -42,20 +44,4 @@ bool serial_receive(int rx_data[]){
     }
   }
   return false;
-}
-
-void setup() {
-  Serial.begin(115200);
-}
-
-void loop() {
-  bool is_received = serial_receive(_rx_data);
-  if(!is_received)
-    return;
-
-  for (int i = 0; i < TX_SIZE; ++i)
-  {
-    _tx_data[i] = _rx_data[i*2] + _rx_data[i*2+1];
-  }
-  serial_send(_tx_data);
 }
